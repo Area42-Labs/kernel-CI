@@ -5,7 +5,7 @@
 cd $HOME
 echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/vince -b dev/back2 kernel
+git clone --depth=1 https://github.com/stormbreaker-project/vince -b release kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/proton-clang clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
