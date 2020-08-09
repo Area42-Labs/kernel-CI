@@ -2,8 +2,10 @@
 echo "Cloning dependencies"
 git clone --depth=1 https://github.com/stormbreaker-project/whyred.git -b eas-old-cam  kernel
 cd kernel
-git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
-git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
+git clone https://github.com/sreekfreak995/AnyKernel3-1.git --depth=1 AnyKernel
+git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
+git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 gcc32
+git clone https://github.com/sreekfreak995/Clang-11.0.3.git --depth=1 clang
 echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
@@ -48,12 +50,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-   make O=out ARCH=arm64 whyred-perf_defconfig
-       make -j$(nproc --all) O=out \
-                             ARCH=arm64 \
-			     CC=clang \
-			     CROSS_COMPILE=aarch64-linux-gnu- \
-			     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+  make O=out ARCH=arm64 whyred-perf_defconfig
+  make -j8 O=out ARCH=arm64 CC="$(pwd)/clang/clang-r383902c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
