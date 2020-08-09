@@ -51,7 +51,7 @@ function finerr() {
 # Compile plox
 function compile() {
   make O=out ARCH=arm64 whyred-perf_defconfig
-  make -j8 O=out ARCH=arm64 CC="$(pwd)/clang/clang-r383902c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+  make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
