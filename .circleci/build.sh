@@ -4,8 +4,9 @@
 
 cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/X00P -b test/back kernel
+git clone --depth=1 https://github.com/pixelexperience-devices/kernel_asus_X00P -b ten kernel
 cd kernel
+git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 echo "Done"
@@ -16,9 +17,9 @@ GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/X00P_defconfig
-PATH="${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
+PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
 export ARCH=arm64
-export KBUILD_BUILD_HOST=hetzner
+export KBUILD_BUILD_HOST="circleci
 export KBUILD_BUILD_USER="saalim"
 
 # Send info to channel
@@ -27,7 +28,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• Kernel •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Zenfone Max M1</b> (X00P)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Test"
+        -d text="Kernel build for X00P started"
 }
 
 # Push kernel to channel
@@ -38,7 +39,7 @@ function push() {
         -F chat_id="$chat_id" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Zenfone Max M1 (X00P)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s)"
 }
 
 # spam Error
