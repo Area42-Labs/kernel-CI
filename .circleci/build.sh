@@ -19,7 +19,7 @@ START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/X00P_defconfig
 PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
 export ARCH=arm64
-export KBUILD_BUILD_HOST="circleci
+export KBUILD_BUILD_HOST="circleci"
 export KBUILD_BUILD_USER="saalim"
 
 # Send info to channel
