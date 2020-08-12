@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/whyred.git -b eas-old-cam  kernel
+git clone --depth=1 https://github.com/stormbreaker-project/whyred.git -b eas-new-cam  kernel
 cd kernel
 git clone https://github.com/sreekfreak995/AnyKernel3-1.git --depth=1 AnyKernel
 git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
