@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/whyred.git -b hmp-new-cam  kernel
+git clone --depth=1 https://github.com/stormbreaker-project/whyred.git -b eas-old-cam  kernel
 cd kernel
 git clone https://github.com/sreekfreak995/AnyKernel3-1.git --depth=1 AnyKernel
 git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
 git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 gcc32
-git clone https://github.com/sreekfreak995/Clang-11.0.3.git --depth=1 clang
+git clone https://github.com/sreekfreak995/Clang-dumpyard.git --depth=1 clang
 echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
