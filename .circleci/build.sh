@@ -5,7 +5,7 @@
 cd $HOME
 echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/sm6150-dev/android_kernel_xiaomi_sm6150 -b lineage-17.1 kernel
+git clone --depth=1 https://github.com/stormbreaker-project/violet -b ten kernel
 cd kernel
 git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
@@ -19,7 +19,7 @@ START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/vendor/lineage_violet_defconfig
 PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
 export ARCH=arm64
-export KBUILD_BUILD_HOST=hetzner
+export KBUILD_BUILD_HOST="circleci"
 export KBUILD_BUILD_USER="saalim"
 
 # Send info to channel
