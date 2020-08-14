@@ -54,7 +54,7 @@ function finerr() {
 
 # Compile
 function compile() {
-    make O=out ARCH=arm64 lineage_violet_defconfig
+    make O=out ARCH=arm64 vendor/lineage_violet_defconfig
     make -j$(nproc --all) O=out \
                              ARCH=arm64 \
 			     CC=clang \
@@ -84,6 +84,7 @@ sendinfo
 compile
 dtbo
 zip
+finerr
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
