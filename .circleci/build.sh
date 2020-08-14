@@ -5,19 +5,18 @@
 cd $HOME
 echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/lav -b dev/back kernel
+git clone --depth=1 https://github.com/sm6150-dev/android_kernel_xiaomi_sm6150 -b lineage-17.1 kernel
 cd kernel
-git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
-git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b lavender $kernelzip
+git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b violet $kernelzip
 export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
-GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/lavender-perf_defconfig
+export CONFIG_PATH=$PWD/arch/arm64/configs/vendor/lineage_violet_defconfig
 PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=hetzner
@@ -29,7 +28,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="Kernel build for lavender started"
+        -d text="Kernel build for violet started"
 }
 
 # Push kernel to channel
@@ -55,9 +54,11 @@ function finerr() {
 
 # Compile
 function compile() {
-    make O=out ARCH=arm64 lavender-perf_defconfig
+    make O=out ARCH=arm64 lineage_violet_defconfig
     make -j$(nproc --all) O=out \
                              ARCH=arm64 \
+			     CC=clang \
+			     CLANG_TRIPLE=aarch64-linux-gnu- \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
 }
@@ -70,8 +71,18 @@ function zip() {
     cd ..
 }
 
+# Generate dtbo
+function dtbo() {
+
+KERNEL_DIR="$HOME/kernel"
+    cd $KERNEL_DIR
+    git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
+    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create $kernelzip/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/xiaomi/violet-sm6150-overlay.dtbo
+}
+
 sendinfo
 compile
+dtbo
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))
