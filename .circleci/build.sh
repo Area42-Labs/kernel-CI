@@ -2,8 +2,12 @@
 # Copyright (C) 2020 Saalim Quadri (iamsaalim)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+function sendTG() {
+    curl -s "https://api.telegram.org/bot${API_KEY}/sendmessage" --data "text=${*}&chat_id=-1001278854279&parse_mode=HTML" > /dev/null
+}
+
 cd $HOME
-echo "Cloning dependencies"
+sendTG "Cloning kernel and toolchains"
 git clone --depth=1 https://github.com/stormbreaker-project/X00P-4.9 -b 14/08 kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
@@ -23,11 +27,7 @@ export KBUILD_BUILD_USER="saalim"
 
 # Send info to channel
 function sendinfo() {
-    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-        -d chat_id="$chat_id" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=html" \
-        -d text="Kernel build for X00P 4.9 started"
+    sendTG "Build for X00P 4.9 started"
 }
 
 # Push kernel to channel
