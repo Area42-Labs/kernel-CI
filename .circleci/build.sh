@@ -6,7 +6,6 @@ cd $HOME
 echo "Cloning dependencies"
 git clone --depth=1 https://github.com/stormbreaker-project/X00P-4.9 -b 14/08 kernel
 cd kernel
-git clone --depth=1 https://github.com/sreekfreak995/Clang-11.0.3.git clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 echo "Done"
@@ -28,7 +27,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="Kernel build for X00P started"
+        -d text="Kernel build for X00P 4.9 started"
 }
 
 # Push kernel to channel
@@ -57,8 +56,6 @@ function compile() {
     make O=out ARCH=arm64 X00P_defconfig
     make -j$(nproc --all) O=out \
                              ARCH=arm64 \
-			     CC=clang \
-			     CLANG_TRIPLE=aarch64-linux-gnu- \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
 }
