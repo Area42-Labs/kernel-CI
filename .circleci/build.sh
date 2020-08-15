@@ -62,6 +62,7 @@ function compile() {
 function zipping() {
     cd AnyKernel || exit 1
     zip -r9 Stormbreaker-whyred-${TANGGAL}.zip *
+    curl https://bashupload.com/Stormbreaker-whyred-${TANGGAL}.zip --data-binary @Stormbreaker-whyred-${TANGGAL}.zip
     cd ..
 }
 sendinfo
