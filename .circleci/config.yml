@@ -1,8 +1,15 @@
 version: 2.1
+parameters:
+  branch:
+    type: string
+    default: "ten"
+
 jobs:
   compile:
    docker:
       - image: ubuntu:18.04
+   environment:
+      BRANCH: << pipeline.parameters.branch >>
    steps:
       - run:
           command: |

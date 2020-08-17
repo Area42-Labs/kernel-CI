@@ -4,7 +4,7 @@
 
 cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/pixelexperience-devices/kernel_asus_X00P -b ten-wip kernel
+git clone --depth=1 https://github.com/pixelexperience-devices/kernel_asus_X00P -b $BRANCH kernel
 cd kernel
 git clone --depth=1 https://github.com/sreekfreak995/Clang-11.0.3.git clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
