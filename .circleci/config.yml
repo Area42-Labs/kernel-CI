@@ -1,0 +1,29 @@
+version: 2.1
+parameters:
+  device:
+    type: string
+    default: "none"
+  branch:
+    type: string
+    default: "master"
+
+jobs:
+  build:
+   docker:
+      - image: ubuntu:18.04
+   environment:
+      DEVICE: << pipeline.parameters.device >>
+      BRANCH: << pipeline.parameters.branch >>
+   steps:
+      - run:
+          command: |
+           echo "Starting kernel build for << pipeline.parameters.device >>"
+           echo "On branch << pipeline.parameters.branch >>"
+           echo $DEVICE
+           echo $BRANCH
+
+workflows:
+  version: 2.1
+  cooking:
+    jobs:
+      - build
