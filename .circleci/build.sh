@@ -43,7 +43,7 @@ fi
 echo "Cloning toolchains"
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 $TOOLCHAIN/gcc > /dev/null 2>&1
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 $TOOLCHAIN/gcc_32 > /dev/null 2>&1
-git clone --depth 1 https://github.com/stormbreaker-project/stormbreaker-clang $TOOLCHAIN/clang > /dev/null 2>&1
+git clone --depth 1 https://github.com/sreekfreak995/Clang-11.0.3.git $TOOLCHAIN/clang
 
 # Set Env
 PATH="${TOOLCHAIN}/clang/bin:${TOOLCHAIN}/gcc/bin:${TOOLCHAIN}/gcc_32/bin:${PATH}"
