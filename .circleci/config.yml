@@ -10,7 +10,7 @@ parameters:
 jobs:
   build:
    docker:
-      - image: ubuntu:18.04
+      - image: starlight2834/ci_docker
    environment:
       DEVICE: << pipeline.parameters.device >>
       BRANCH: << pipeline.parameters.branch >>
@@ -18,9 +18,8 @@ jobs:
       - run:
           command: |
            echo "Starting kernel build for << pipeline.parameters.device >>"
-           echo "On branch << pipeline.parameters.branch >>"
-           echo $DEVICE
-           echo $BRANCH
+           wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/master/.circleci/build.sh
+           source build.sh $DEVICE $BRANCH
 
 workflows:
   version: 2.1
