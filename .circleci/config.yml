@@ -10,14 +10,18 @@ parameters:
 jobs:
   build:
    docker:
-      - image: starlight2834/ci_docker
+      - image: ubuntu:18.04
    environment:
       DEVICE: << pipeline.parameters.device >>
       BRANCH: << pipeline.parameters.branch >>
    steps:
       - run:
           command: |
-           apt-get -y update && apt-get -y install wget
+           apt-get -y update && apt-get -y upgrade && apt-get -y install wget rsync curl git
+           git config --global user.name "iamsaalim"
+           git config --global user.email "saalimquadri1@gmail.com"
+           git config --global color.ui false
+           git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
            echo "Starting kernel build for << pipeline.parameters.device >>"
            wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/master/.circleci/build.sh
            source build.sh $DEVICE $BRANCH
