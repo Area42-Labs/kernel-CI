@@ -54,33 +54,29 @@ export KBUILD_COMPILER_STRING="${TOOLCHAIN}/clang/bin/clang --version | head -n 
 
 # Build
 cd "$KERNEL_DIR/$DEVICE"
-sendTG "Starting Build on <a href=\"${CIRCLE_BUILD_URL}\">circleci</a>"
+sendTG "Build Started on <a href=\"${CIRCLE_BUILD_URL}\">circleci</a>"
 
 if [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/$DEVICE-perf_defconfig ]
 then
-     make O=out ARCH=arm64 $DEVICE-perf_defconfig > /dev/null 2>&1
+     make O=out ARCH=arm64 $DEVICE-perf_defconfig
 elif [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/vendor/$DEVICE-perf_defconfig ]
 then
-    make O=out ARCH=arm64 vendor/$DEVICE-perf_defconfig > /dev/null 2>&1
+    make O=out ARCH=arm64 vendor/$DEVICE-perf_defconfig
 fi
 
 if [[ "$DEVICE" == "phoenix" ]];
 then
      PATH="${TOOLCHAIN}/clang/bin:${PATH}"
-     make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- CC=clang AR=llvm-ar OBJDUMP=llvm-objdump STRIP=llvm-strip NM=llvm-nm OBJCOPY=llvm-objcopy LD=ld.lld | tee logs.txt
+     make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- CC=clang AR=llvm-ar OBJDUMP=llvm-objdump STRIP=llvm-strip NM=llvm-nm OBJCOPY=llvm-objcopy LD=ld.lld
 else
-     make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- | tee logs.txt
+     make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
 fi
 
 if [ -f $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb ]
 then
     sendTG "Build Complete"
 else
-    sendTG "Build Failed. Uploading logs"
-    curl -F chat_id="${CHAT_ID}"  \
-                    -F document=@"logs.txt" \
-                    https://api.telegram.org/bot${token}/sendDocument > /dev/null 2>&1
-    rm -rf "$KERNEL_DIR"
+    sendTG "Build Failed"
     exit 1
 fi
 
@@ -92,18 +88,18 @@ cp $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
 if [ -f $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/dts/xiaomi/*.dtbo ]
 then
     sendTG "Building DTBO"
-    git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt > /dev/null 2>&1
+    git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
 
 if [[ "$DEVICE" == "phoenix" ]];
 then
-    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create AnyKernel3/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/xiaomi/phoenix-sdmmagpie-overlay.dtbo > /dev/null 2>&1
+    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create AnyKernel3/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/xiaomi/phoenix-sdmmagpie-overlay.dtbo
 else
-    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create AnyKernel3/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/qcom/*.dtbo > /dev/null 2>&1
+    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create AnyKernel3/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/qcom/*.dtbo
 fi
 fi
 
-cd AnyKernel3 && make normal > /dev/null 2>&1
+cd AnyKernel3 && make normal
 
 ZIP=$(echo *.zip)
-curl -F chat_id="${CHAT_ID}" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument" > /dev/null 2>&1
+curl -F chat_id="${CHAT_ID}" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
 sendTG "Join @Stormbreakerci to get your build"
