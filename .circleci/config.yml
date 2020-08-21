@@ -17,6 +17,7 @@ jobs:
    steps:
       - run:
           command: |
+           apt-get -y update && apt-get -y install wget
            echo "Starting kernel build for << pipeline.parameters.device >>"
            wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/master/.circleci/build.sh
            source build.sh $DEVICE $BRANCH
