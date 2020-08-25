@@ -78,7 +78,7 @@ DIFF=$(($END - $START))
 
 if [ -f $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb ]
 then
-    sendTG "Build Completed in $DIFF"
+    sendTG "Build Completed in $DIFF seconds"
 else
     sendTG "Build Failed"
     exit 1
