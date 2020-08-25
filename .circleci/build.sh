@@ -64,6 +64,7 @@ then
     make O=out ARCH=arm64 vendor/$DEVICE-perf_defconfig
 fi
 
+START=$(date +"%s")
 if [[ "$DEVICE" == "phoenix" ]];
 then
      PATH="${TOOLCHAIN}/clang/bin:${PATH}"
@@ -72,9 +73,12 @@ else
      make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
 fi
 
+END=$(date +"%s")
+DIFF=$(($END - $START))
+
 if [ -f $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb ]
 then
-    sendTG "Build Complete"
+    sendTG "Build Completed in $DIFF"
 else
     sendTG "Build Failed"
     exit 1
@@ -102,4 +106,4 @@ cd AnyKernel3 && make normal
 
 ZIP=$(echo *.zip)
 curl -F chat_id="${CHAT_ID}" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
-sendTG "Join @Stormbreakerci to get your build"
+# sendTG "Join @Stormbreakerci to get your build"
