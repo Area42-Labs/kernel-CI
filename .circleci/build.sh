@@ -23,7 +23,7 @@ CHAT_ID="-1001278854279"
 mkdir -p "$PROJECT_DIR/kernelsource"
 
 # Clone up the source
-git clone $ORG/$DEVICE -b $BRANCH $KERNEL_DIR/$DEVICE --depth 1 || { sendTG "Your device is not officially supported or wrong branch"; exit 1;}
+git clone $ORG/$DEVICE -b $BRANCH $KERNEL_DIR/$DEVICE --depth 1 || { sendTG "Your device is not officially supported or wrong branch"; exit 0;}
 
 # Find defconfig
 echo "Checking if defconfig exist ($DEVICE)"
@@ -36,7 +36,7 @@ then
     sendTG "Starting build"
 else
     sendTG "Defconfig not found"
-    exit 1
+    exit 0
 fi
 
 # Clone toolchain
