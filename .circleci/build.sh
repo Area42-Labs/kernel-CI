@@ -33,7 +33,7 @@ then
     sendTG "Starting build"
 elif [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/vendor/$DEVICE-perf_defconfig ]
 then
-    sendTG "Starting build"
+    echo "Starting build"
 else
     sendTG "Defconfig not found"
     exit 0
@@ -54,7 +54,12 @@ export KBUILD_COMPILER_STRING="${TOOLCHAIN}/clang/bin/clang --version | head -n 
 
 # Build
 cd "$KERNEL_DIR/$DEVICE"
-sendTG "Build Started on <a href=\"${CIRCLE_BUILD_URL}\">circleci</a>"
+sendTG "Build Started
+
+Device :- ${DEVICE}
+Branch :- ${BRANCH}
+
+<a href=\"${CIRCLE_BUILD_URL}\">circleci</a>"
 
 if [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/$DEVICE-perf_defconfig ]
 then
@@ -78,14 +83,14 @@ DIFF=$(($END - $START))
 
 if [ -f $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb ]
 then
-    sendTG "Build Completed in $DIFF seconds"
+    sendTG "Build Completed in $DIFF seconds, Uploading zip"
 else
     sendTG "Build Failed"
     exit 1
 fi
 
 # Clone Anykernel
-git clone -b $DEVICE https://github.com/stormbreaker-project/AnyKernel3
+git clone -b $DEVICE https://github.com/stormbreaker-project/AnyKernel3 --depth 1 || { sendTG "Branch not found in Anykernel repo"; exit 0;}
 cp $KERNEL_DIR/$DEVICE/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
 
 # Build dtbo
