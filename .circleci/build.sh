@@ -11,7 +11,7 @@ function sendTG() {
 }
 
 function trackTG() {
-    curl -s "https://api.telegram.org/bot$token/sendmessage" --data "text=${*}&chat_id=@stormbreakerci&parse_mode=HTML" > /dev/null
+    curl -s "https://api.telegram.org/bot$token/sendmessage" --data "text=${*}&chat_id=@stormbreakerci&parse_mode=HTML&disable_web_page_preview=True" > /dev/null
 }
 
 # Setup arguments
@@ -122,5 +122,5 @@ cd AnyKernel3 && make normal
 
 ZIP=$(echo *.zip)
 curl -F chat_id="${CHAT_ID}" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
-curl -F chat_id="@stormbreakerci" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
+curl -F chat_id="-1001273051289" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
 sendTG "Join @Stormbreakerci to track your build"
