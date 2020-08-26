@@ -30,7 +30,7 @@ echo "Checking if defconfig exist ($DEVICE)"
 
 if [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/$DEVICE-perf_defconfig ]
 then
-    sendTG "Starting build"
+    echo "Starting build"
 elif [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/vendor/$DEVICE-perf_defconfig ]
 then
     echo "Starting build"
