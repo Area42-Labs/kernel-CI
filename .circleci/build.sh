@@ -10,6 +10,10 @@ function sendTG() {
     curl -s "https://api.telegram.org/bot$token/sendmessage" --data "text=${*}&chat_id=-1001278854279&parse_mode=HTML" > /dev/null
 }
 
+function trackTG() {
+    curl -s "https://api.telegram.org/bot$token/sendmessage" --data "text=${*}&chat_id=@stormbreakerci&parse_mode=HTML" > /dev/null
+}
+
 # Setup arguments
 PROJECT_DIR="$HOME"
 ORG="https://github.com/stormbreaker-project"
@@ -61,6 +65,13 @@ Branch :- ${BRANCH}
 
 <a href=\"${CIRCLE_BUILD_URL}\">circleci</a>"
 
+trackTG "Build Started
+
+Device :- ${DEVICE}
+Branch :- ${BRANCH}
+
+${CIRCLE_BUILD_URL}"
+
 if [ -f $KERNEL_DIR/$DEVICE/arch/arm64/configs/$DEVICE-perf_defconfig ]
 then
      make O=out ARCH=arm64 $DEVICE-perf_defconfig
@@ -111,4 +122,5 @@ cd AnyKernel3 && make normal
 
 ZIP=$(echo *.zip)
 curl -F chat_id="${CHAT_ID}" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
-# sendTG "Join @Stormbreakerci to get your build"
+curl -F chat_id="@stormbreakerci" -F document=@"$ZIP" "https://api.telegram.org/bot${token}/sendDocument"
+sendTG "Join @Stormbreakerci to track your build"
