@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/ArrowOS-Devices/android_kernel_xiaomi_whyred.git -b arrow-11.0  kernel
+git clone --depth=1  https://github.com/baibhab34/RMX1801 -b hmp kernel
 cd kernel
 git clone https://github.com/arter97/arm64-gcc --depth=1
 git clone https://github.com/arter97/arm32-gcc --depth=1
-git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
+git clone --depth=1 https://gitlab.com/Baibhab34/AnyKernel3.git -b rmx1801 AnyKernel
 echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-perf_defconfig
+export CONFIG_PATH=$PWD/arch/arm64/configs/RMX1801_defconfig
 PATH="$(pwd)/arm64-gcc/bin:$(pwd)/arm32-gcc/bin:${PATH}" \
 export ARCH=arm64
 export USE_CCACHE=1
 export KBUILD_BUILD_HOST=circleci
-export KBUILD_BUILD_USER="Sreekanth"
+export KBUILD_BUILD_USER="Baibhab"
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -27,7 +27,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• Stormbreaker Kernel •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Xiaomi Redmi Note5/5Pro</b> (whyred)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#Stable"
+        -d text="<b>• Stormbreaker Kernel •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Realme 2 pro</b> (RMX1801)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#Stable"
 }
 # Push kernel to channel
 function push() {
@@ -37,7 +37,7 @@ function push() {
         -F chat_id="$chat_id" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Xiaomi Redmi Note 5/5Pro (whyred)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Realme 2 pro (RMX1801)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
 }
 # Fin Error
 function finerr() {
@@ -50,7 +50,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-   make O=out ARCH=arm64 whyred-perf_defconfig
+   make O=out ARCH=arm64 RMX1801_defconfig
      PATH="$(pwd)/arm64-gcc/bin:$(pwd)/arm32-gcc/bin:${PATH}" \
        make -j$(nproc --all) O=out \
                              ARCH=arm64 \
@@ -61,8 +61,8 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Stormbreaker-whyred-${TANGGAL}.zip *
-    curl https://bashupload.com/Stormbreaker-whyred-${TANGGAL}.zip --data-binary @Stormbreaker-whyred-${TANGGAL}.zip
+    zip -r9 Stormbreaker-RMX1801-${TANGGAL}.zip *
+    curl https://bashupload.com/Stormbreaker-RMX1801-${TANGGAL}.zip --data-binary @Stormbreaker-RMX1801-${TANGGAL}.zip
     cd ..
 }
 sendinfo
