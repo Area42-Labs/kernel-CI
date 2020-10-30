@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/ArrowOS-Devices/android_kernel_xiaomi_whyred.git -b arrow-11.0  kernel
+git clone --depth=1 https://github.com/SreekanthPalakurthi/kranul.git -b eas  kernel
 cd kernel
 git clone https://github.com/arter97/arm64-gcc --depth=1
 git clone https://github.com/arter97/arm32-gcc --depth=1
@@ -50,7 +50,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-   make O=out ARCH=arm64 whyred-perf_defconfig
+   make O=out ARCH=arm64 whyred-oldcam_defconfig
      PATH="$(pwd)/arm64-gcc/bin:$(pwd)/arm32-gcc/bin:${PATH}" \
        make -j$(nproc --all) O=out \
                              ARCH=arm64 \
