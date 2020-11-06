@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/sreekfreak995/kranul.git  -b eas-old-cam kernel
+git clone --depth=1 https://github.com/ArrowOS-Devices/android_kernel_xiaomi_whyred.git  -b arrow-10.0 kernel
 cd kernel
 git clone --depth=1 https://github.com/sreekfreak995/Clang-dumpyard.git clang
 git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
