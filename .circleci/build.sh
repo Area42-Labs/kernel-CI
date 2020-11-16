@@ -50,7 +50,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-   make O=out ARCH=arm64 whyred-perf_defconfig
+   make O=out ARCH=arm64 whyred-oldcam_defconfig
      PATH="$(pwd)/arm64-gcc/bin:$(pwd)/arm32-gcc/bin:${PATH}" \
        make -j$(nproc --all) O=out \
                              ARCH=arm64 \
