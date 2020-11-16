@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/ArrowOS-Devices/android_kernel_xiaomi_whyred.git -b arrow-10.0  kernel
+git clone --depth=1 https://github.com/SreekanthPalakurthi/kranul.git -b hmp kernel
 cd kernel
 git clone https://github.com/arter97/arm64-gcc --depth=1
 git clone https://github.com/arter97/arm32-gcc --depth=1
@@ -9,7 +9,7 @@ echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-perf_defconfig
+export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-oldcam_defconfig
 PATH="$(pwd)/arm64-gcc/bin:$(pwd)/arm32-gcc/bin:${PATH}" \
 export ARCH=arm64
 export USE_CCACHE=1
