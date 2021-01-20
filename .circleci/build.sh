@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1  https://github.com/baibhab34/RMX1801 -b hmp kernel
+git clone --depth=1  https://github.com/baibhab34/RMX1801 -b eas3 kernel
 cd kernel
 git clone https://github.com/arter97/arm64-gcc --depth=1
 git clone https://github.com/arter97/arm32-gcc --depth=1
