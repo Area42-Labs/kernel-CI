@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/sreekfreak995/kranul.git  -b eas-old-cam kernel
+git clone --depth=1 https://github.com/SreekanthPalakurthi/kranul.git  -b eas kernel
 cd kernel
 git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
@@ -8,7 +8,7 @@ echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-perf_defconfig
+export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-oldcam_defconfig
 PATH="${PWD}/clang/bin:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=circleci
